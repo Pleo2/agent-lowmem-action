@@ -8,7 +8,7 @@ function response(value, status = 200) {
 
 function actionEnv() {
   return {
-    INPUT_GITHUB_TOKEN: "test-token",
+    "INPUT_GITHUB-TOKEN": "test-token",
     INPUT_REPOSITORY: "Pleo2/example",
     INPUT_REF: "0123456789abcdef0123456789abcdef01234567",
     GITHUB_STEP_SUMMARY: "/runner/summary",

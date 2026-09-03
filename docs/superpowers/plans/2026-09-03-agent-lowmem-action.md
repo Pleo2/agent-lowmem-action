@@ -97,7 +97,7 @@ for (const value of ["", "owner", "owner/repo/extra", "owner name/repo", ".hidde
 
 test("loadInputs reads the explicit action contract", () => {
   assert.deepEqual(loadInputs({
-    INPUT_GITHUB_TOKEN: "token-value",
+    "INPUT_GITHUB-TOKEN": "token-value",
     INPUT_REPOSITORY: "Pleo2/agent-lowmem",
     INPUT_REF: "0123456789abcdef",
     GITHUB_STEP_SUMMARY: "/tmp/summary",
@@ -148,7 +148,7 @@ function required(env, key, label) {
 }
 
 export function loadInputs(env) {
-  const token = required(env, "INPUT_GITHUB_TOKEN", "github-token");
+  const token = required(env, "INPUT_GITHUB-TOKEN", "github-token");
   const { owner, repo } = parseRepository(required(env, "INPUT_REPOSITORY", "repository"));
   return {
     token,

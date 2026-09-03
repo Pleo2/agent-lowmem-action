@@ -17,7 +17,7 @@ for (const value of ["", "owner", "owner/repo/extra", "owner name/repo", ".hidde
 
 test("loadInputs reads the explicit action contract", () => {
   assert.deepEqual(loadInputs({
-    INPUT_GITHUB_TOKEN: "token-value",
+    "INPUT_GITHUB-TOKEN": "token-value",
     INPUT_REPOSITORY: "Pleo2/agent-lowmem",
     INPUT_REF: "0123456789abcdef",
     GITHUB_STEP_SUMMARY: "/tmp/summary",

@@ -20,7 +20,7 @@ function required(env, key, label) {
 }
 
 export function loadInputs(env) {
-  const token = required(env, "INPUT_GITHUB_TOKEN", "github-token");
+  const token = required(env, "INPUT_GITHUB-TOKEN", "github-token");
   const { owner, repo } = parseRepository(required(env, "INPUT_REPOSITORY", "repository"));
   return {
     token,
