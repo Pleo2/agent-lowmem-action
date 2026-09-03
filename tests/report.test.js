@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { renderOutputs, renderReport } from "../src/report.js";
+import { escapeAnnotation, renderOutputs, renderReport } from "../src/report.js";
 
 test("renderReport produces a stable complete summary", () => {
   assert.equal(renderReport({
@@ -84,5 +84,16 @@ test("renderOutputs emits only closed, sorted public values", () => {
   assert.throws(
     () => renderOutputs({ result: "recommendations", ecosystems: ["node\nmalicious=true"] }),
     /ecosystem must be a closed value/,
+  );
+});
+
+test("escapeAnnotation closes workflow command injection", () => {
+  assert.equal(
+    escapeAnnotation("a%b:c,d\r\ne\u001b"),
+    "a%25b%3Ac%2Cd%0D%0Ae ",
+  );
+  assert.equal(
+    escapeAnnotation(`${"x".repeat(512)}tail`),
+    "x".repeat(512),
   );
 });

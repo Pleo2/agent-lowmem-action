@@ -1,0 +1,30 @@
+name: Agent Lowmem Readiness
+description: Inspect repository evidence and recommend low-memory agent commands without checkout or code execution.
+author: Pleo2
+
+inputs:
+  github-token:
+    description: GitHub token used only for read-only repository API requests.
+    required: true
+  repository:
+    description: Repository to inspect in owner/name form.
+    required: false
+    default: ${{ github.repository }}
+  ref:
+    description: Exact commit or ref used for repository content reads.
+    required: false
+    default: ${{ github.sha }}
+
+outputs:
+  result:
+    description: Closed result value: recommendations, no-supported-toolchain, or incomplete.
+  ecosystems:
+    description: Comma-separated detected ecosystems in stable alphabetical order.
+
+runs:
+  using: node24
+  main: src/main.js
+
+branding:
+  icon: activity
+  color: purple

@@ -93,3 +93,17 @@ export function renderOutputs({ result, ecosystems }) {
   const stable = [...new Set(ecosystems)].sort(compareText).join(",");
   return `result=${result}\necosystems=${stable}\n`;
 }
+
+export function escapeAnnotation(message) {
+  const bounded = [...String(message).replace(/\p{Cc}/gu, (character) => (
+    character === "\r" || character === "\n" ? character : " "
+  ))]
+    .slice(0, 512)
+    .join("");
+  return bounded
+    .replaceAll("%", "%25")
+    .replaceAll("\r", "%0D")
+    .replaceAll("\n", "%0A")
+    .replaceAll(":", "%3A")
+    .replaceAll(",", "%2C");
+}
