@@ -320,7 +320,7 @@ assert.deepEqual(classifyEvidence({
 });
 ```
 
-Also cover empty roots, directories with manifest-like names, `tsconfig.build.json`, invalid `package.json`, and exactly 1,000 root entries setting `incomplete: true`. Invalid repository `package.json` is treated as bounded repository evidence: preserve filename-based detection, skip manifest-derived evidence, set `incomplete: true`, and emit the closed warning `package-json-invalid`.
+Also cover empty roots, directories with manifest-like names, `tsconfig.build.json`, invalid `package.json`, and exactly 1,000 root entries setting `incomplete: true`. Invalid repository `package.json` preserves filename-based detection, skips manifest-derived evidence, and emits the closed warning `package-json-invalid`; it does not set `incomplete`, which remains reserved for a root listing at GitHub's 1,000-entry limit.
 
 - [ ] **Step 2: Run classifier tests and confirm the red state**
 
