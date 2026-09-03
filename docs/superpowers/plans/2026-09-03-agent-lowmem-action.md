@@ -320,7 +320,7 @@ assert.deepEqual(classifyEvidence({
 });
 ```
 
-Also cover empty roots, directories with manifest-like names, `tsconfig.build.json`, invalid `package.json`, and exactly 1,000 root entries setting `incomplete: true`.
+Also cover empty roots, directories with manifest-like names, `tsconfig.build.json`, invalid `package.json`, and exactly 1,000 root entries setting `incomplete: true`. Invalid repository `package.json` is treated as bounded repository evidence: preserve filename-based detection, skip manifest-derived evidence, set `incomplete: true`, and emit the closed warning `package-json-invalid`.
 
 - [ ] **Step 2: Run classifier tests and confirm the red state**
 
@@ -466,6 +466,8 @@ git commit -m "feat: render low-memory recommendations"
 - Create: `src/main.js`
 - Create: `action.yml`
 - Create: `tests/run.test.js`
+- Modify: `src/report.js`
+- Modify: `tests/report.test.js`
 
 **Interfaces:**
 - Consumes interfaces from Tasks 1–4.
@@ -509,7 +511,7 @@ return result
 
 Derive result as `incomplete` first, otherwise `recommendations` when at least one command exists, otherwise `no-supported-toolchain`.
 
-- [ ] **Step 4: Add atomic workflow-file append behavior**
+- [ ] **Step 4: Add bounded workflow-file append behavior**
 
 The injected `appendFile` defaults to `node:fs/promises.appendFile`. Write the summary first and outputs second. If either fails, throw `workflow-file-write-failed` with the logical target name only; do not include absolute runner paths.
 
@@ -522,7 +524,7 @@ process.stderr.write(`::error title=Agent Lowmem Action::${escapeAnnotation(mess
 process.exitCode = 1;
 ```
 
-`escapeAnnotation` percent-encodes `%`, carriage return, newline, `:`, and `,`; the error message has control characters removed and is capped at 512 code points.
+Export `escapeAnnotation` from `src/report.js` and cover it in `tests/report.test.js` before importing it here. It percent-encodes `%`, carriage return, newline, `:`, and `,`; the error message has control characters removed and is capped at 512 code points.
 
 - [ ] **Step 6: Define the public Action metadata**
 
@@ -537,7 +539,7 @@ Expected: syntax check PASS and all tests PASS with no live network requests.
 - [ ] **Step 8: Commit Task 5**
 
 ```bash
-git add action.yml src/run.js src/main.js tests/run.test.js
+git add action.yml src/run.js src/main.js src/report.js tests/run.test.js tests/report.test.js
 git commit -m "feat: assemble read-only github action"
 ```
 
@@ -625,12 +627,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - uses: ./
+      - uses: Pleo2/agent-lowmem-action@main
         with:
           github-token: ${{ github.token }}
 ```
 
-The SHAs above resolve from the reviewed `v6` tags on 2026-09-03. Retain the full pins and version comments.
+The SHAs above resolve from the reviewed `v6` tags on 2026-09-03. Retain the full pins and version comments. The self-inspection job deliberately consumes the remote Action and has no checkout step; `uses: ./` would require repository checkout and violate the consumer contract being tested.
 
 - [ ] **Step 5: Verify documentation locally**
 
