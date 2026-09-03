@@ -43,3 +43,8 @@ test("public contract workflow remains read-only and self-inspects without check
   const selfInspection = workflow.slice(workflow.indexOf("  self-inspection:"));
   assert.doesNotMatch(selfInspection, /actions\/checkout|uses: \.\//);
 });
+
+test("public contract action metadata quotes descriptions containing YAML separators", async () => {
+  const manifest = await read("action.yml");
+  assert.doesNotMatch(manifest, /^\s+description:\s+[^"'|>\n]*:\s.+$/m);
+});

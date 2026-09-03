@@ -17,7 +17,7 @@ inputs:
 
 outputs:
   result:
-    description: Closed result value: recommendations, no-supported-toolchain, or incomplete.
+    description: "Closed result value: recommendations, no-supported-toolchain, or incomplete."
   ecosystems:
     description: Comma-separated detected ecosystems in stable alphabetical order.
 
